@@ -13,6 +13,33 @@ public:
     Vector operator-() const;
     Vector operator-(const Vector &other) const;
     Vector operator*(Scalar k) const;
+    // In-place operators
+    void operator+=(const Vector &other) {*this = *this + other;}
+    void operator-=(const Vector &other) {*this = *this - other;}
+    void operator*=(const Scalar k) {*this = *this * k;}
+
+    Scalar at (int index) const { 
+        if (index == 0) return x;
+        if (index == 1) return y;
+        if (index == 2) return z;
+        assert(0 && "Invalid index");
+        return 0;
+    }
+    Scalar& at (int index) { 
+        if (index == 0) return x;
+        if (index == 1) return y;
+        if (index == 2) return z;
+        assert(0 && "Invalid index");
+        return x;
+    }
+    Scalar operator[](int index) const {
+        assert((index>=0) && (index<=2) && "Invalid index");
+        return ((Scalar*)this)[index];
+    }
+    Scalar& operator[](int index) {
+        assert((index>=0) && (index<=2) && "Invalid index");
+        return ((Scalar*)this)[index];
+    }
 };
 
 inline Vector::Vector(): x(0), y(0), z(0) {}
@@ -26,6 +53,7 @@ inline Vector Vector::sum(const Vector &other) const {
 inline Vector Vector::operator+(const Vector &other) const {
     return Vector(x + other.x, y + other.y, z + other.z);
 }
+
 
 // Invert
 inline Vector Vector::operator-() const {

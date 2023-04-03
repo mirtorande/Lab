@@ -2,6 +2,18 @@
 #include <assert.h>
 #include "scalar.h"
 #include "vector.h"
+#include "point.h"
+
+// POD: Plain old data
+struct Plane{
+    Point p;
+    Vector n;
+};
+
+struct Ray{
+    Point start;
+    Vector dir;
+};
 
 // TESTS
 void unitTestSumIsCommutative() {
@@ -24,9 +36,17 @@ Vector rayReflection(Vector v, Vector n) {
     return v - (2 * dot(n, v)) * n;
 }
 
+// Point-plane intersection
+Point intersection(Plane plane, Ray ray) {
+    Scalar k = dot(plane.p - ray.start, plane.n)/
+                dot(ray.dir, plane.n);
+    return ray.start + k*ray.dir;
+}
+
 int main() {
     Vector v, w(2, 3, 5);
-    v.x = 2;
+    v[0] = 2;
+    Scalar foo = v[0]+5;
     v = v + w;
     unitTestSumIsCommutative();
     unitTestCross();
